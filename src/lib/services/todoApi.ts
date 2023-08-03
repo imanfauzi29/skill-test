@@ -27,15 +27,23 @@ export const todoApi = createApi({
         next: { revalidate: 60 },
       }),
     }),
-    addTodo: builder.query<Todos, Partial<Todos>>({
+    addTodo: builder.mutation<Todos, Partial<Todos>>({
       query: (body) => ({ url: 'todos', body, method: 'POST' }),
+    }),
+    updateTodo: builder.mutation<Todos, Partial<Todos>>({
+      query: ({ id, ...rest }) => ({
+        url: `todos/${id}`,
+        body: { ...rest },
+        method: 'PUT',
+      }),
     }),
   }),
 })
 
 export const {
   useGetTodoQuery,
-  useAddTodoQuery,
+  useAddTodoMutation,
+  useUpdateTodoMutation,
   util: { getRunningQueriesThunk },
 } = todoApi
 
